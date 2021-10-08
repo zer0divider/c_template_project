@@ -1,6 +1,16 @@
+# executable
+program
+
+# binaries
 build/
 *.o
-program
+
+# vim files
+*.swp
 *.vim
+
+# mac os
 .DS_Store
+
+# other
 *~
