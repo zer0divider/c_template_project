@@ -16,20 +16,28 @@ BIN=program
 CFLAGS=-std=c11 -g
 #CFLAGS=-std=c++11 -g
 
-# includes
-INCLUDE=
-INCLUDE_PATHS_FILE=config/include_paths.txt
-ifneq ("$(wildcard $(INCLUDE_PATHS_FILE))", "")
-	INCLUDE += $(shell cat $(INCLUDE_PATHS_FILE))
-endif
-
 # libraries
 LIBS = -lm
+# libraries to look for with pkg-config (e.g. sdl2)
+PKG_LIBS=
+
+# pkg-config
+ifneq ($(PKG_LIBS),)
+	LIBS += $(shell pkg-config --libs $(PKG_LIBS))
+	CFLAGS += $(shell pkg-config --cflags $(PKG_LIBS))
+endif
 
 # library paths
 LIB_PATHS_FILE=config/lib_paths.txt
 ifneq ("$(wildcard $(LIB_PATHS_FILE))", "")
 	LIBS += $(shell cat $(LIB_PATHS_FILE))
+endif
+
+# includes
+INCLUDE=
+INCLUDE_PATHS_FILE=config/include_paths.txt
+ifneq ("$(wildcard $(INCLUDE_PATHS_FILE))", "")
+	INCLUDE += $(shell cat $(INCLUDE_PATHS_FILE))
 endif
 
 # build directory
