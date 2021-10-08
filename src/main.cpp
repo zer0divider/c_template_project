@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <iostream>
 
 int main(int argc, char ** argv)
 {
@@ -6,6 +6,6 @@ int main(int argc, char ** argv)
 	if(argc >= 2){
 		name = argv[1];
 	}
-	printf("Hello '%s'!\n", name);
+	std::cout<<"Hello '"<<name<<"'!"<<std::endl;
 	return 0;
 }

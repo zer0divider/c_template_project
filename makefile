@@ -3,12 +3,18 @@ SRC_DIR=src
 
 # add your source files here:
 SRC=main.c
+#SRC=main.cpp
 
 # file ending of source files
 SRC_FILE_ENDING=c
+#SRC_FILE_ENDING=cpp
 
 # output executable
 BIN=program
+
+# cflags
+CFLAGS=-std=c11 -g
+#CFLAGS=-std=c++11 -g
 
 # includes
 INCLUDE=-I/usr/include
@@ -21,16 +27,19 @@ BUILD_DIR=build
 
 # compiler
 CC=gcc
+#CC=g++
 
 # debugger
 GDB=gdb
 
-# cflags
-CFLAGS=-std=c11 -g
+# commandline arguments
+PROGRAM_ARGS_FILE=args.txt
+ifneq ("$(wildcard $(PROGRAM_ARGS_FILE))", "")
+	PROGRAM_ARGS=$(shell cat $(PROGRAM_ARGS_FILE))
+endif
 
 # dependency flags
 DEPFLAGS=-MMD -MP 
-
 
 # tag generation
 CTAGS_DIRS=./$(SRC_DIR)
@@ -45,7 +54,7 @@ DEP=$(SRC:%.$(SRC_FILE_ENDING)=$(BUILD_DIR)/%.d)
 # verbose variable
 VERBOSE?=0
 ifeq ($(VERBOSE), 0)
-Q := @
+	Q := @
 endif
 
 # default target build all
@@ -53,12 +62,11 @@ all: $(BIN)
 
 # run application
 run: $(BIN)
-	@echo "EXECUTING '$(BIN)':\n"
-	$(Q)./$<
+	./$< $(PROGRAM_ARGS)
 
 # start debugging
 debug: $(BIN)
-	$(GDB) ./$<
+	$(GDB) --args ./$< $(PROGRAM_ARGS) 
 
 # create build directory
 $(BUILD_DIR):
