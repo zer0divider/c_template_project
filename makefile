@@ -17,10 +17,20 @@ CFLAGS=-std=c11 -g
 #CFLAGS=-std=c++11 -g
 
 # includes
-INCLUDE=-I/usr/include
+INCLUDE=
+INCLUDE_PATHS_FILE=config/include_paths.txt
+ifneq ("$(wildcard $(INCLUDE_PATHS_FILE))", "")
+	INCLUDE += $(shell cat $(INCLUDE_PATHS_FILE))
+endif
 
 # libraries
-LIBS=-lm
+LIBS = -lm
+
+# library paths
+LIB_PATHS_FILE=config/lib_paths.txt
+ifneq ("$(wildcard $(LIB_PATHS_FILE))", "")
+	LIBS += $(shell cat $(LIB_PATHS_FILE))
+endif
 
 # build directory
 BUILD_DIR=build
@@ -33,7 +43,7 @@ CC=gcc
 GDB=gdb
 
 # commandline arguments
-PROGRAM_ARGS_FILE=args.txt
+PROGRAM_ARGS_FILE=config/args.txt
 ifneq ("$(wildcard $(PROGRAM_ARGS_FILE))", "")
 	PROGRAM_ARGS=$(shell cat $(PROGRAM_ARGS_FILE))
 endif
